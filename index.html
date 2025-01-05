@@ -5,9 +5,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+  <header>
+    <div class="header">
+      <div class="score">
+        <h1 id="score">Score:</h1>
+      </div>
+      <div class="players">
+        <h2 id="player">Player: 0</h2>
+        <h2 id="ai">AI: 0</h2>
+      </div>
+    </div>
+  </header>
+  <div class="buttons">
+    <button class="btn btn-choice" id="rock" data-choice="rock">rock</button>
+    <button class="btn btn-choice" id="paper" data-choice="paper">paper</button>
+    <button class="btn btn-choice" id="scissors" data-choice="scissors">scissors</button>
+  </div>
+  <div class="score">
+    <button class="btn" id="reset-btn">reset game</button>
+  </div>
+  <div id="results"></div>
+
+  <!-- javascript -->
   <script src="./app.js"></script>
 </body>
 

@@ -1,4 +1,51 @@
-// user input
+// get buttons
+let resetBtn = document.getElementById("reset-btn");
+let buttons = document.querySelectorAll(".btn-choice");
+// store human choice
+let humanChoice = "";
+// get scores
+let playerScore = document.getElementById("player");
+let aiScore = document.getElementById("ai");
+// get results stats
+let results = document.getElementById("results");
+
+function handleChoice(event) {
+	humanChoice = event.target.dataset.choice;
+	let computerChoice = getComputerChoice();
+	playRound(humanChoice, computerChoice);
+	if (humanScore === 5) {
+		alert("YOU REACHED 5 POINTS, CONGRATULATIONS, YOU WON !");
+		results.textContent = "Press the RESET button to play again.";
+		disableButtons();
+	} else if (computerScore === 5) {
+		alert("THE AI HAS REACHED 5 POINTS, YOU LOST!");
+		results.textContent = "Press the RESET button to play again.";
+		disableButtons();
+	}
+}
+
+// disable all buttons
+function disableButtons() {
+	buttons.forEach(function (button) {
+		button.disabled = true;
+	});
+}
+
+// enable buttons
+function enableButtons() {
+	buttons.forEach(function (button) {
+		button.disabled = false;
+	});
+}
+
+function resetGame() {
+	humanScore = 0;
+	computerScore = 0;
+	playerScore.textContent = `Player: ${humanScore}`;
+	aiScore.textContent = `AI: ${computerScore}`;
+	results.textContent = "GAME RESET. ENJOY PLAYING!";
+	enableButtons();
+}
 
 // variables for score
 let humanScore = 0;
@@ -11,19 +58,6 @@ function getComputerChoice() {
 	return choices[randomIndex];
 }
 
-// get the user input
-function getHumanChoice() {
-	let userInput = prompt("lets play rock paper scissors");
-	let validChoices = ["rock", "paper", "scissors"];
-	let input = userInput.toLowerCase();
-	while (!validChoices.includes(input)) {
-		input = prompt(
-			"Invalid choice! Please enter rock, paper or scissors"
-		).toLowerCase();
-	}
-	return input;
-}
-
 // winning conditions defined
 const winConditions = {
 	rock: "scissors",
@@ -31,39 +65,24 @@ const winConditions = {
 	scissors: "paper",
 };
 
-// one rounde using helper
+// one round play
 function playRound(humanChoice, computerChoice) {
-	// making the inputs case insensitive
-	let humanChoiceLower = humanChoice.toLowerCase();
-	let computerChoiceLower = computerChoice.toLowerCase();
-	// if it is a draw
-	if (humanChoiceLower === computerChoiceLower) {
-		console.log("Its a draw");
-		// if human choice beat computer choice
-	} else if (winConditions[humanChoiceLower] === computerChoiceLower) {
+	if (humanChoice === computerChoice) {
+		results.textContent = "Is a draw";
+	} else if (winConditions[humanChoice] === computerChoice) {
 		humanScore++;
-		console.log("You won this round!");
-		// if computer choice beat human choice
+		playerScore.textContent = `Player: ${humanScore}`;
+		results.textContent = "You won this round";
 	} else {
 		computerScore++;
-		console.log("You lost this round!");
+		aiScore.textContent = `AI: ${computerScore}`;
+		results.textContent = "You lost this round!";
 	}
 }
 
-// 5 rounds
-for (let i = 0; i < 5; i++) {
-	console.log(`Round ${i + 1}`);
-	let humanSelection = getHumanChoice();
-	let computerSelection = getComputerChoice();
-	playRound(humanSelection, computerSelection);
-	console.log(`Score - You: ${humanScore}, AI: ${computerScore}`);
-}
+// add event listeneres to buttons
+buttons.forEach(function (button) {
+	button.addEventListener("click", handleChoice);
+});
 
-// final result
-if (humanScore > computerScore) {
-	console.log("Congratulations, you won!");
-} else if (humanScore < computerScore) {
-	console.log("Sorry, you lost!");
-} else {
-	console.log("The game is a draw");
-}
+resetBtn.addEventListener("click", resetGame);
